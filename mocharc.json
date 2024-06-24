@@ -1,0 +1,34 @@
+{
+  "showDiff": true,
+  "extension": [
+    "js",
+    "cjs",
+    "mjs"
+  ],
+  "package": "./package.json",
+  "reporter": "spec",
+  "slow": "800",
+  "timeout": "10000",
+  "spec": "./tests/mocha/*.spec.js",
+  "inline-diffs ": true,
+  "recursive": true,
+  "exit": true,
+  "ui": "bdd",
+  "retries": 3,
+  "ignore": [
+    "node_modules",
+    "dist",
+    "swaggers",
+    "seeds",
+    "migrations",
+    ".devcontainer",
+    ".vscode"
+  ],
+  "watch-files": [
+    "lib/**/*.js",
+    "tests/mocha/*.js"
+  ],
+  "watch-ignore": [
+    "lib/vendor"
+  ]
+}
