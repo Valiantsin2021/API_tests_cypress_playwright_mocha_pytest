@@ -9,7 +9,7 @@ dotenv.config()
 let token = ''
 let contactId = ''
 describe(`Supertest contacts API`, async () => {
-  it('should register new user', async () => {
+  it('register new user', async () => {
     const response = await request(process.env.BASE_URL).post('/users').send({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -21,7 +21,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body.user).to.have.property('lastName', user.lastName)
     expect(response.body.user).to.have.property('email', user.email.toLowerCase())
   })
-  it('should login registered user', async () => {
+  it('login registered user', async () => {
     const response = await request(process.env.BASE_URL).post('/users/login').send({
       email: user.email,
       password: user.password
@@ -32,7 +32,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body.user).to.have.property('email', user.email.toLowerCase())
     token = response.body.token
   })
-  it('should add contact', async () => {
+  it('create contact', async () => {
     const response = await request(process.env.BASE_URL)
       .post('/contacts')
       .set('Authorization', `Bearer ${token}`)
@@ -62,7 +62,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('country', contact.country)
     contactId = response.body._id
   })
-  it('should get user contacts', async () => {
+  it('get user contacts', async () => {
     const response = await request(process.env.BASE_URL).get('/contacts').set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(200)
     expect(response.body).to.have.lengthOf(1)
@@ -77,7 +77,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body[0]).to.have.property('postalCode', contact.postalCode)
     expect(response.body[0]).to.have.property('country', contact.country)
   })
-  it('should get contact', async () => {
+  it('get single contact', async () => {
     const response = await request(process.env.BASE_URL)
       .get(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
@@ -93,7 +93,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('postalCode', contact.postalCode)
     expect(response.body).to.have.property('country', contact.country)
   })
-  it('should update contact', async () => {
+  it('update contact', async () => {
     const response = await request(process.env.BASE_URL)
       .put(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
@@ -121,7 +121,22 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('postalCode', contact2.postalCode)
     expect(response.body).to.have.property('country', contact2.country)
   })
-  it('should get updated contact', async () => {
+  it(`get contacts after update`, async () => {
+    const response = await request(process.env.BASE_URL).get('/contacts').set('Authorization', `Bearer ${token}`)
+    expect(response.status).to.equal(200)
+    expect(response.body).to.have.lengthOf(1)
+    expect(response.body[0]).to.have.property('firstName', contact2.firstName)
+    expect(response.body[0]).to.have.property('lastName', contact2.lastName)
+    expect(response.body[0]).to.have.property('email', contact2.email.toLowerCase())
+    expect(response.body[0]).to.have.property('phone', contact2.phoneNumber)
+    expect(response.body[0]).to.have.property('street1', contact2.street)
+    expect(response.body[0]).to.have.property('street2', '')
+    expect(response.body[0]).to.have.property('city', contact2.city)
+    expect(response.body[0]).to.have.property('stateProvince', contact2.state)
+    expect(response.body[0]).to.have.property('postalCode', contact2.postalCode)
+    expect(response.body[0]).to.have.property('country', contact2.country)
+  })
+  it('get contact after update', async () => {
     const response = await request(process.env.BASE_URL)
       .get(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
@@ -137,7 +152,7 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('postalCode', contact2.postalCode)
     expect(response.body).to.have.property('country', contact2.country)
   })
-  it(`should patch contact`, async () => {
+  it(`patch contact`, async () => {
     const response = await request(process.env.BASE_URL)
       .patch(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
@@ -152,7 +167,23 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('lastName', 'Name')
     expect(response.body).to.have.property('email', contact2.email.toLowerCase())
   })
-  it('should get patched contact', async () => {
+
+  it(`get contacts after patch`, async () => {
+    const response = await request(process.env.BASE_URL).get('/contacts').set('Authorization', `Bearer ${token}`)
+    expect(response.status).to.equal(200)
+    expect(response.body).to.have.lengthOf(1)
+    expect(response.body[0]).to.have.property('firstName', 'Updated')
+    expect(response.body[0]).to.have.property('lastName', 'Name')
+    expect(response.body[0]).to.have.property('email', contact2.email.toLowerCase())
+    expect(response.body[0]).to.have.property('phone', contact2.phoneNumber)
+    expect(response.body[0]).to.have.property('street1', contact2.street)
+    expect(response.body[0]).to.have.property('street2', '')
+    expect(response.body[0]).to.have.property('city', contact2.city)
+    expect(response.body[0]).to.have.property('stateProvince', contact2.state)
+    expect(response.body[0]).to.have.property('postalCode', contact2.postalCode)
+    expect(response.body[0]).to.have.property('country', contact2.country)
+  })
+  it('get contact after patch', async () => {
     const response = await request(process.env.BASE_URL)
       .get(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
@@ -168,23 +199,28 @@ describe(`Supertest contacts API`, async () => {
     expect(response.body).to.have.property('postalCode', contact2.postalCode)
     expect(response.body).to.have.property('country', contact2.country)
   })
-  it('should delete contact', async () => {
+  it('delete contact', async () => {
     const response = await request(process.env.BASE_URL)
       .delete(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(200)
   })
-  it(`should get contact after delete`, async () => {
+  it(`get contacts after delete`, async () => {
+    const response = await request(process.env.BASE_URL).get('/contacts').set('Authorization', `Bearer ${token}`)
+    expect(response.status).to.equal(200)
+    expect(response.body).to.have.lengthOf(0)
+  })
+  it(`get contact after delete`, async () => {
     const response = await request(process.env.BASE_URL)
       .get(`/contacts/${contactId}`)
       .set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(404)
   })
-  it('should delete user', async () => {
+  it('delete user', async () => {
     const response = await request(process.env.BASE_URL).delete('/users/me').set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(200)
   })
-  it(`should get user profile after delete`, async () => {
+  it(`get user profile after delete`, async () => {
     const response = await request(process.env.BASE_URL).get('/users/me').set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(401)
   })

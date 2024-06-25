@@ -7,7 +7,7 @@ describe('API users crud', () => {
   before(() => {
     let token = ''
   })
-  it(`redister new user`, function () {
+  it(`register new user`, function () {
     cy.api({
       method: 'POST',
       url: './users',
@@ -92,7 +92,19 @@ describe('API users crud', () => {
     })
   })
 
-  it(`login registered user after logout`, function () {
+  it(`get user profile after logout`, function () {
+    cy.api({
+      method: 'GET',
+      url: './users/me',
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      },
+      failOnStatusCode: false
+    }).then(response => {
+      expect(response.status).to.eq(401)
+    })
+  })
+  it(`login and get updated user`, function () {
     cy.api({
       method: 'POST',
       url: './users/login',

@@ -58,7 +58,11 @@ test.describe.serial(`Supertest users API`, async () => {
     const response = await api.postReq('/users/logout', {}, token)
     expect(response.status()).toBe(200)
   })
-  test(`login registered user after logout`, async ({ api }) => {
+  test(`get user profile after logout`, async ({ api }) => {
+    const response = await api.getReq('/users/me', token)
+    expect(response.status()).toBe(401)
+  })
+  test(`login and get updated user`, async ({ api }) => {
     const response = await api.postReq('/users/login', {
       email: user.email,
       password: 'myNewPassword'

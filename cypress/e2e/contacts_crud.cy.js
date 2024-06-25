@@ -8,7 +8,7 @@ describe('API contacts crud', () => {
     let token = ''
     let contactId = ''
   })
-  it(`redister new user`, function () {
+  it(`register new user`, function () {
     cy.api({
       method: 'POST',
       url: './users',
@@ -71,7 +71,7 @@ describe('API contacts crud', () => {
       this.contactId = response.body._id
     })
   })
-  it(`get contacts`, function () {
+  it(`get user contacts`, function () {
     cy.api({
       method: 'GET',
       url: './contacts',
@@ -84,7 +84,7 @@ describe('API contacts crud', () => {
     })
   })
 
-  it(`get contact`, function () {
+  it(`get single contact`, function () {
     cy.api({
       method: 'GET',
       url: './contacts/' + this.contactId,
@@ -96,11 +96,18 @@ describe('API contacts crud', () => {
       expect(response.body).to.have.property('firstName', contact1.firstName)
       expect(response.body).to.have.property('lastName', contact1.lastName)
       expect(response.body).to.have.property('email', contact1.email.toLowerCase())
+      expect(response.body).to.have.property('phone', contact1.phoneNumber)
+      expect(response.body).to.have.property('street1', contact1.street)
+      expect(response.body).to.have.property('street2', '')
+      expect(response.body).to.have.property('city', contact1.city)
+      expect(response.body).to.have.property('stateProvince', contact1.state)
+      expect(response.body).to.have.property('postalCode', contact1.postalCode)
+      expect(response.body).to.have.property('country', contact1.country)
     })
   })
   it(`update contact`, function () {
     cy.api({
-      method: 'PATCH',
+      method: 'PUT',
       url: './contacts/' + this.contactId,
       headers: {
         Authorization: `Bearer ${this.token}`
@@ -108,13 +115,27 @@ describe('API contacts crud', () => {
       body: {
         firstName: contact2.firstName,
         lastName: contact2.lastName,
-        email: contact2.email
+        email: contact2.email,
+        phone: contact2.phoneNumber,
+        street1: contact2.street,
+        street2: '',
+        city: contact2.city,
+        stateProvince: contact2.state,
+        postalCode: contact2.postalCode,
+        country: contact2.country
       }
     }).then(response => {
       expect(response.status).to.eq(200)
       expect(response.body).to.have.property('firstName', contact2.firstName)
       expect(response.body).to.have.property('lastName', contact2.lastName)
       expect(response.body).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body).to.have.property('street1', contact2.street)
+      expect(response.body).to.have.property('street2', '')
+      expect(response.body).to.have.property('city', contact2.city)
+      expect(response.body).to.have.property('stateProvince', contact2.state)
+      expect(response.body).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body).to.have.property('country', contact2.country)
     })
   })
 
@@ -128,6 +149,16 @@ describe('API contacts crud', () => {
     }).then(response => {
       expect(response.status).to.eq(200)
       expect(response.body.length).to.eq(1)
+      expect(response.body[0]).to.have.property('firstName', contact2.firstName)
+      expect(response.body[0]).to.have.property('lastName', contact2.lastName)
+      expect(response.body[0]).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body[0]).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body[0]).to.have.property('street1', contact2.street)
+      expect(response.body[0]).to.have.property('street2', '')
+      expect(response.body[0]).to.have.property('city', contact2.city)
+      expect(response.body[0]).to.have.property('stateProvince', contact2.state)
+      expect(response.body[0]).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body[0]).to.have.property('country', contact2.country)
     })
   })
 
@@ -143,6 +174,13 @@ describe('API contacts crud', () => {
       expect(response.body).to.have.property('firstName', contact2.firstName)
       expect(response.body).to.have.property('lastName', contact2.lastName)
       expect(response.body).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body).to.have.property('street1', contact2.street)
+      expect(response.body).to.have.property('street2', '')
+      expect(response.body).to.have.property('city', contact2.city)
+      expect(response.body).to.have.property('stateProvince', contact2.state)
+      expect(response.body).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body).to.have.property('country', contact2.country)
     })
   })
   it(`patch contact`, function () {
@@ -163,6 +201,13 @@ describe('API contacts crud', () => {
       expect(response.body).to.have.property('firstName', 'Updated')
       expect(response.body).to.have.property('lastName', 'Name')
       expect(response.body).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body).to.have.property('street1', contact2.street)
+      expect(response.body).to.have.property('street2', '')
+      expect(response.body).to.have.property('city', contact2.city)
+      expect(response.body).to.have.property('stateProvince', contact2.state)
+      expect(response.body).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body).to.have.property('country', contact2.country)
     })
   })
 
@@ -176,6 +221,16 @@ describe('API contacts crud', () => {
     }).then(response => {
       expect(response.status).to.eq(200)
       expect(response.body.length).to.eq(1)
+      expect(response.body[0]).to.have.property('firstName', 'Updated')
+      expect(response.body[0]).to.have.property('lastName', 'Name')
+      expect(response.body[0]).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body[0]).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body[0]).to.have.property('street1', contact2.street)
+      expect(response.body[0]).to.have.property('street2', '')
+      expect(response.body[0]).to.have.property('city', contact2.city)
+      expect(response.body[0]).to.have.property('stateProvince', contact2.state)
+      expect(response.body[0]).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body[0]).to.have.property('country', contact2.country)
     })
   })
 
@@ -191,6 +246,13 @@ describe('API contacts crud', () => {
       expect(response.body).to.have.property('firstName', 'Updated')
       expect(response.body).to.have.property('lastName', 'Name')
       expect(response.body).to.have.property('email', contact2.email.toLowerCase())
+      expect(response.body).to.have.property('phone', contact2.phoneNumber)
+      expect(response.body).to.have.property('street1', contact2.street)
+      expect(response.body).to.have.property('street2', '')
+      expect(response.body).to.have.property('city', contact2.city)
+      expect(response.body).to.have.property('stateProvince', contact2.state)
+      expect(response.body).to.have.property('postalCode', contact2.postalCode)
+      expect(response.body).to.have.property('country', contact2.country)
     })
   })
   it(`delete contact`, function () {
@@ -204,7 +266,31 @@ describe('API contacts crud', () => {
       expect(response.status).to.eq(200)
     })
   })
-  it(`delete user`, function () {
+  it(`get contacts after delete`, function () {
+    cy.api({
+      method: 'GET',
+      url: './contacts',
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    }).then(response => {
+      expect(response.status).to.eq(200)
+      expect(response.body.length).to.eq(0)
+    })
+  })
+  it(`get contact after delete`, function () {
+    cy.api({
+      method: 'GET',
+      url: './contacts/' + this.contactId,
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      },
+      failOnStatusCode: false
+    }).then(response => {
+      expect(response.status).to.eq(404)
+    })
+  })
+  it(`delete registered user`, function () {
     cy.api({
       method: 'DELETE',
       url: './users/me',

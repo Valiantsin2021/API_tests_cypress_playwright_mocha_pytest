@@ -59,7 +59,7 @@ describe(`Supertest users API`, async () => {
     const response = await request(process.env.BASE_URL).get('/users/me').set('Authorization', `Bearer ${token}`)
     expect(response.status).to.equal(401)
   })
-  it('login registered user after logout', async () => {
+  it('login and get updated user', async () => {
     const response = await request(process.env.BASE_URL).post('/users/login').send({
       email: user.email,
       password: 'myNewPassword'

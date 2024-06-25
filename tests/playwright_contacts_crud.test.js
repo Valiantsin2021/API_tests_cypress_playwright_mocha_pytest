@@ -32,7 +32,7 @@ test.describe.serial(`Contacts API`, async () => {
     expect(body.user).toHaveProperty('email', user.email.toLowerCase())
     token = body.token
   })
-  test(`add new contact`, async ({ api }) => {
+  test(`create contact`, async ({ api }) => {
     const response = await api.postReq(
       '/contacts',
       {
@@ -64,7 +64,7 @@ test.describe.serial(`Contacts API`, async () => {
     expect(body).toHaveProperty('country', contact.country)
     contactId = body._id
   })
-  test(`get all contacts`, async ({ api }) => {
+  test(`get user contacts`, async ({ api }) => {
     const response = await api.getReq('/contacts', token)
     const body = await response.json()
     expect(response.status()).toBe(200)
@@ -115,7 +115,23 @@ test.describe.serial(`Contacts API`, async () => {
     expect(body).toHaveProperty('postalCode', contact2.postalCode)
     expect(body).toHaveProperty('country', contact2.country)
   })
-  test(`get updated contact`, async ({ api }) => {
+  test(`get contacts after update`, async ({ api }) => {
+    const response = await api.getReq('/contacts', token)
+    const body = await response.json()
+    expect(response.status()).toBe(200)
+    expect(body.length).toBe(1)
+    expect(body[0]).toHaveProperty('firstName', contact2.firstName)
+    expect(body[0]).toHaveProperty('lastName', contact2.lastName)
+    expect(body[0]).toHaveProperty('email', contact2.email.toLowerCase())
+    expect(body[0]).toHaveProperty('phone', contact2.phoneNumber)
+    expect(body[0]).toHaveProperty('street1', contact2.street)
+    expect(body[0]).toHaveProperty('street2', '')
+    expect(body[0]).toHaveProperty('city', contact2.city)
+    expect(body[0]).toHaveProperty('stateProvince', contact2.state)
+    expect(body[0]).toHaveProperty('postalCode', contact2.postalCode)
+    expect(body[0]).toHaveProperty('country', contact2.country)
+  })
+  test(`get contact after update`, async ({ api }) => {
     const response = await api.getReq(`/contacts/${contactId}`, token)
     const body = await response.json()
     expect(response.status()).toBe(200)
@@ -146,14 +162,43 @@ test.describe.serial(`Contacts API`, async () => {
     expect(body).toHaveProperty('lastName', 'Name')
     expect(body).toHaveProperty('email', contact2.email.toLowerCase())
     expect(body).toHaveProperty('phone', contact2.phoneNumber)
+    expect(body).toHaveProperty('street1', contact2.street)
+    expect(body).toHaveProperty('street2', '')
+    expect(body).toHaveProperty('city', contact2.city)
+    expect(body).toHaveProperty('stateProvince', contact2.state)
+    expect(body).toHaveProperty('postalCode', contact2.postalCode)
+    expect(body).toHaveProperty('country', contact2.country)
   })
-  test(`get patched contact`, async ({ api }) => {
+  test(`get contacts after patch`, async ({ api }) => {
+    const response = await api.getReq('/contacts', token)
+    const body = await response.json()
+    expect(response.status()).toBe(200)
+    expect(body.length).toBe(1)
+    expect(body[0]).toHaveProperty('firstName', 'Updated')
+    expect(body[0]).toHaveProperty('lastName', 'Name')
+    expect(body[0]).toHaveProperty('email', contact2.email.toLowerCase())
+    expect(body[0]).toHaveProperty('phone', contact2.phoneNumber)
+    expect(body[0]).toHaveProperty('street1', contact2.street)
+    expect(body[0]).toHaveProperty('street2', '')
+    expect(body[0]).toHaveProperty('city', contact2.city)
+    expect(body[0]).toHaveProperty('stateProvince', contact2.state)
+    expect(body[0]).toHaveProperty('postalCode', contact2.postalCode)
+    expect(body[0]).toHaveProperty('country', contact2.country)
+  })
+  test(`get contact after patch`, async ({ api }) => {
     const response = await api.getReq(`/contacts/${contactId}`, token)
     const body = await response.json()
     expect(response.status()).toBe(200)
     expect(body).toHaveProperty('firstName', 'Updated')
     expect(body).toHaveProperty('lastName', 'Name')
     expect(body).toHaveProperty('email', contact2.email.toLowerCase())
+    expect(body).toHaveProperty('phone', contact2.phoneNumber)
+    expect(body).toHaveProperty('street1', contact2.street)
+    expect(body).toHaveProperty('street2', '')
+    expect(body).toHaveProperty('city', contact2.city)
+    expect(body).toHaveProperty('stateProvince', contact2.state)
+    expect(body).toHaveProperty('postalCode', contact2.postalCode)
+    expect(body).toHaveProperty('country', contact2.country)
   })
 
   // Delete
@@ -166,6 +211,10 @@ test.describe.serial(`Contacts API`, async () => {
     const body = await response.json()
     expect(response.status()).toBe(200)
     expect(body.length).toBe(0)
+  })
+  test(`get contact after delete`, async ({ api }) => {
+    const response = await api.getReq(`/contacts/${contactId}`, token)
+    expect(response.status()).toBe(404)
   })
   test(`delete registered user`, async ({ api }) => {
     const response = await api.deleteReq('/users/me', token)

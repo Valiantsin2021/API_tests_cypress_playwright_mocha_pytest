@@ -14,6 +14,8 @@ npm install
 
 ## Usage
 
+For the sake of clean measurements there are no external reporters installed.
+
 Cypress can be run from the command line.
 ```bash
 npm run cypress
