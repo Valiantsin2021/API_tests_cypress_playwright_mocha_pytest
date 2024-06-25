@@ -40,7 +40,7 @@ export class UserBuilder {
     this.user.email = faker.internet.email()
     this.user.countryCode = faker.number.int({ min: 0, max: 30 })
     this.user.password = faker.internet.password()
-    this.user.phoneNumber = faker.phone.number('##########')
+    this.user.phoneNumber = faker.string.numeric(9)
     this.user.street = faker.location.streetAddress({ useFullAddress: true })
     this.user.city = faker.location.city()
     this.user.state = faker.location.state()

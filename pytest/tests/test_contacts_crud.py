@@ -18,38 +18,63 @@ user = {
     "email": fake.email(),
     "password": fake.password(),
 }
+# contact1 = {
+#     "firstName": fake.first_name(),
+#     "lastName": fake.last_name(),
+#     "email": fake.email(),
+#     "phone": fake.msisdn(),
+#     "street1": fake.street_address(),
+#     "street2": "",
+#     "city": fake.city(),
+#     "stateProvince": fake.state(),
+#     "postalCode": fake.postcode(),
+#     "country": fake.country(),
+# }
+# contact2 = {
+
+#     "firstName": fake.first_name(),
+#     "lastName": fake.last_name(),
+#     "email": fake.email(),
+#     "phone": fake.msisdn(),
+#     "street1": fake.street_address(),
+#     "street2": "",
+#     "city": fake.city(),
+#     "stateProvince": fake.state(),
+#     "postalCode": fake.postcode(),
+#     "country": fake.country(),
+# }
+
 contact1 = {
-    "firstName": fake.first_name(),
-    "lastName": fake.last_name(),
-    "email": fake.email(),
-    "phone": fake.phone_number(),
-    "street1": fake.street_address(),
+    "firstName": 'Hithere',
+    "lastName": 'oops',
+    "email": 'fake@mail.co',
+    "phone": '78123798213',
+    "street1": 'Ajkdsfh jksdhf',
     "street2": "",
-    "city": fake.city(),
-    "stateProvince": fake.state(),
-    "postalCode": fake.postcode(),
-    "country": fake.country(),
+    "city": 'HJklde',
+    "stateProvince": 'AZ',
+    "postalCode": '29654',
+    "country": 'US',
 }
 contact2 = {
-
-    "firstName": fake.first_name(),
-    "lastName": fake.last_name(),
-    "email": fake.email(),
-    "phone": fake.phone_number(),
-    "street1": fake.street_address(),
+    "firstName": 'dsfvsdv',
+    "lastName": 'sdvvvsd',
+    "email": 'sdvsdvdsv@mail.co',
+    "phone": '24352345656',
+    "street1": 'dsacfsdvc jksdhf',
     "street2": "",
-    "city": fake.city(),
-    "stateProvince": fake.state(),
-    "postalCode": fake.postcode(),
-    "country": fake.country(),
+    "city": 'sdvvvd',
+    "stateProvince": 'NY',
+    "postalCode": '31889',
+    "country": 'US',
 }
-
-
+session = requests.Session()
+session.verify = False
 class Test_ContactsCrud:
     def test_register_user(self):
         global token, user
         headers = {"Content-Type": "application/json"}
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/users", headers=headers, data=json.dumps(user)
         )
         assert response.status_code == 201
@@ -62,7 +87,7 @@ class Test_ContactsCrud:
     def test_login_user(self):
         global token
         headers = {"Content-Type": "application/json"}
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/users/login",
             headers=headers,
             data=json.dumps({"email": user["email"], "password": user["password"]}),
@@ -80,7 +105,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/contacts",
             headers=headers,
             data=json.dumps(contact1),
@@ -105,7 +130,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts", headers=headers
         )
         assert response.status_code == 200
@@ -127,7 +152,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + f"/contacts/{contact_id}", headers=headers
         )
         assert response.status_code == 200
@@ -145,7 +170,7 @@ class Test_ContactsCrud:
 
     def test_update_contact(self):
         global token, contact_id
-        response = requests.put(
+        response = session.put(
             os.getenv("BASE_URL") + "/contacts/" + contact_id,
             headers={
                 "Content-Type": "application/json",
@@ -172,7 +197,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts", headers=headers
         )
         assert response.status_code == 200
@@ -193,7 +218,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts/" + contact_id, headers=headers
         )
         assert response.status_code == 200
@@ -210,7 +235,7 @@ class Test_ContactsCrud:
         assert body["country"] == contact2["country"]
     def test_patch_contact(self):
         global token, contact_id
-        response = requests.patch(
+        response = session.patch(
             os.getenv("BASE_URL") + "/contacts/" + contact_id,
             headers={
                 "Content-Type": "application/json",
@@ -220,7 +245,7 @@ class Test_ContactsCrud:
         "firstName": 'Updated',
         "lastName": 'Name',
         "email": contact2["email"],
-        "phone": contact2["phoneNumber"]
+        "phone": contact2["phone"]
       }),
         )
         assert response.status_code == 200
@@ -228,14 +253,14 @@ class Test_ContactsCrud:
         assert body["firstName"] == 'Updated'
         assert body["lastName"] == 'Name'
         assert body["email"] == contact2["email"]
-        assert body["phone"] == contact2["phoneNumber"]
+        assert body["phone"] == contact2["phone"]
     def test_get_contacts_after_patch(self):
         global token
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts", headers=headers
         )
         assert response.status_code == 200
@@ -243,7 +268,7 @@ class Test_ContactsCrud:
         assert body[0]["firstName"] == 'Updated'
         assert body[0]["lastName"] == 'Name'
         assert body[0]["email"] == contact2["email"]
-        assert body[0]["phone"] == contact2["phoneNumber"]
+        assert body[0]["phone"] == contact2["phone"]
         assert body[0]["street1"] == contact2["street1"]
         assert body[0]["street2"] == contact2["street2"]
         assert body[0]["city"] == contact2["city"]
@@ -256,7 +281,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts/" + contact_id, headers=headers
         )
         assert response.status_code == 200
@@ -264,7 +289,7 @@ class Test_ContactsCrud:
         assert body["firstName"] == 'Updated'
         assert body["lastName"] == 'Name'
         assert body["email"] == contact2["email"]
-        assert body["phone"] == contact2["phoneNumber"]
+        assert body["phone"] == contact2["phone"]
         assert body["street1"] == contact2["street1"]
         assert body["street2"] == contact2["street2"]
         assert body["city"] == contact2["city"]
@@ -273,7 +298,7 @@ class Test_ContactsCrud:
         assert body["country"] == contact2["country"]
     def test_delete_contact(self):
         global token, contact_id
-        response = requests.delete(
+        response = session.delete(
             os.getenv("BASE_URL") + "/contacts/" + contact_id,
             headers={
                 "Content-Type": "application/json",
@@ -287,7 +312,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts", headers=headers
         )
         assert response.status_code == 200
@@ -299,7 +324,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/contacts/" + contact_id, headers=headers
         )
         assert response.status_code == 404
@@ -309,7 +334,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.delete(
+        response = session.delete(
             os.getenv("BASE_URL") + "/users/me", headers=headers
         )
         assert response.status_code == 200
@@ -319,7 +344,7 @@ class Test_ContactsCrud:
             "Content-Type": "application/json",
             "Authorization": "Bearer " + token,
         }
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/users/me", headers=headers
         )
         assert response.status_code == 401

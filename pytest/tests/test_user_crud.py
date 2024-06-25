@@ -17,13 +17,14 @@ user = {
         "password": fake.password(),
     }
 
-
+session = requests.Session()
+session.verify = False
 
 class Test_UserCrud:
     def test_register_user(self):
         global token, user
         headers = {'Content-Type': 'application/json'}
-        response = requests.post(os.getenv("BASE_URL") + "/users", headers=headers, data=json.dumps(user))
+        response = session.post(os.getenv("BASE_URL") + "/users", headers=headers, data=json.dumps(user))
         assert response.status_code == 201
         body = response.json()
         assert body["user"]["firstName"] == user["firstName"]
@@ -34,7 +35,7 @@ class Test_UserCrud:
     def test_login_user(self):
         global token
         headers = {'Content-Type': 'application/json'}
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/users/login", headers=headers,
             data=json.dumps({"email": user["email"], "password": user["password"]}),
         )
@@ -46,7 +47,7 @@ class Test_UserCrud:
         token = body["token"]
     def test_get_user_profile(self):
         global token
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/users/me",
             headers={"Authorization": "Bearer " + token},
         )
@@ -60,7 +61,7 @@ class Test_UserCrud:
 
     def test_update_user_profile(self):
         global token
-        response = requests.patch(
+        response = session.patch(
             os.getenv("BASE_URL") + "/users/me",
             headers={"Authorization": "Bearer " + token, 'Content-Type': 'application/json'},
             data=json.dumps({
@@ -79,21 +80,21 @@ class Test_UserCrud:
         )
     def test_logout_user(self):
         global token
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/users/logout",
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 200
     def test_get_user_profile_after_logout(self):
         global token
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/users/me",
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 401
     def test_login_and_get_updated_user(self):
         global token
-        response = requests.post(
+        response = session.post(
             os.getenv("BASE_URL") + "/users/login",
             headers={'Content-Type': 'application/json'},
             data=json.dumps({"email": user["email"], "password": "myNewPassword"}),
@@ -107,7 +108,7 @@ class Test_UserCrud:
 
     def test_delete_user(self):
         global token
-        response = requests.delete(
+        response = session.delete(
             os.getenv("BASE_URL") + "/users/me",
             headers={"Authorization": "Bearer " + token},
         )
@@ -115,7 +116,7 @@ class Test_UserCrud:
 
     def test_get_user_profile_after_delete(self):
         global token
-        response = requests.get(
+        response = session.get(
             os.getenv("BASE_URL") + "/users/me",
             headers={"Authorization": "Bearer " + token},
         )
