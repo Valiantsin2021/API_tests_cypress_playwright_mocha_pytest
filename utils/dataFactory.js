@@ -37,7 +37,7 @@ export class UserBuilder {
     this.user.id = faker.string.uuid()
     this.user.firstName = faker.person.firstName('male')
     this.user.lastName = faker.person.lastName('male')
-    this.user.email = faker.internet.email()
+    this.user.email = faker.internet.email().toLowerCase()
     this.user.countryCode = faker.number.int({ min: 0, max: 30 })
     this.user.password = faker.internet.password()
     this.user.phoneNumber = faker.string.numeric(9)

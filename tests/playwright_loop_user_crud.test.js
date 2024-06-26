@@ -1,21 +1,8 @@
 // @ts-nocheck
 import fs from 'fs'
 import { expect, test } from '../fixtures/fixture.api.js'
-const users = JSON.parse(fs.readFileSync('./1.json'))
+const users = JSON.parse(fs.readFileSync('./fixtures/users.json'))
 let token = ''
-// const users = [
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build(),
-//   new UserBuilder().setDefaults().build()
-// ]
 for (let user of users) {
   test.describe.serial(`Supertest users API user ${user.firstName}`, async () => {
     test(`register new user ${user.firstName}`, async ({ api }) => {
@@ -29,7 +16,7 @@ for (let user of users) {
       expect(response.status()).toBe(201)
       expect(body.user).toHaveProperty('firstName', user.firstName)
       expect(body.user).toHaveProperty('lastName', user.lastName)
-      expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+      expect(body.user).toHaveProperty('email', user.email)
       token = body.token
     })
     test(`login registered user ${user.firstName}`, async ({ api }) => {
@@ -41,7 +28,7 @@ for (let user of users) {
       expect(response.status()).toBe(200)
       expect(body.user).toHaveProperty('firstName', user.firstName)
       expect(body.user).toHaveProperty('lastName', user.lastName)
-      expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+      expect(body.user).toHaveProperty('email', user.email)
       token = body.token
     })
     test(`get user ${user.firstName} profile`, async ({ api }) => {
@@ -50,7 +37,7 @@ for (let user of users) {
       expect(response.status()).toBe(200)
       expect(body).toHaveProperty('firstName', user.firstName)
       expect(body).toHaveProperty('lastName', user.lastName)
-      expect(body).toHaveProperty('email', user.email.toLowerCase())
+      expect(body).toHaveProperty('email', user.email)
     })
     test(`update user ${user.firstName} profile`, async ({ api }) => {
       const response = await api.patchReq(
@@ -67,7 +54,7 @@ for (let user of users) {
       expect(response.status()).toBe(200)
       expect(body).toHaveProperty('firstName', 'Updated')
       expect(body).toHaveProperty('lastName', 'Username')
-      expect(body).toHaveProperty('email', user.email.toLowerCase())
+      expect(body).toHaveProperty('email', user.email)
     })
     test(`logout user ${user.firstName}`, async ({ api }) => {
       const response = await api.postReq('/users/logout', {}, token)
@@ -86,7 +73,7 @@ for (let user of users) {
       expect(response.status()).toBe(200)
       expect(body.user).toHaveProperty('firstName', 'Updated')
       expect(body.user).toHaveProperty('lastName', 'Username')
-      expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+      expect(body.user).toHaveProperty('email', user.email)
       token = body.token
     })
     test(`delete registered user ${user.firstName}`, async ({ api }) => {

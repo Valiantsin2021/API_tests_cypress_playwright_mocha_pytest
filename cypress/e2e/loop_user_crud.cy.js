@@ -21,7 +21,7 @@ for (let i = 0; i < 10; i++) {
         expect(response.status).to.eq(201)
         expect(response.body.user).to.have.property('firstName', user.firstName)
         expect(response.body.user).to.have.property('lastName', user.lastName)
-        expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+        expect(response.body.user).to.have.property('email', user.email)
         this.token = response.body.token
       })
     })
@@ -38,7 +38,7 @@ for (let i = 0; i < 10; i++) {
         expect(response.status).to.eq(200)
         expect(response.body.user).to.have.property('firstName', user.firstName)
         expect(response.body.user).to.have.property('lastName', user.lastName)
-        expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+        expect(response.body.user).to.have.property('email', user.email)
         this.token = response.body.token
       })
     })
@@ -55,7 +55,7 @@ for (let i = 0; i < 10; i++) {
         expect(response.status).to.eq(200)
         expect(response.body).to.have.property('firstName', user.firstName)
         expect(response.body).to.have.property('lastName', user.lastName)
-        expect(response.body).to.have.property('email', user.email.toLowerCase())
+        expect(response.body).to.have.property('email', user.email)
       })
     })
 
@@ -76,7 +76,7 @@ for (let i = 0; i < 10; i++) {
         expect(response.status).to.eq(200)
         expect(response.body).to.have.property('firstName', 'Updated')
         expect(response.body).to.have.property('lastName', 'Username')
-        expect(response.body).to.have.property('email', user.email.toLowerCase())
+        expect(response.body).to.have.property('email', user.email)
       })
     })
 
@@ -116,7 +116,7 @@ for (let i = 0; i < 10; i++) {
         expect(response.status).to.eq(200)
         expect(response.body.user).to.have.property('firstName', 'Updated')
         expect(response.body.user).to.have.property('lastName', 'Username')
-        expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+        expect(response.body.user).to.have.property('email', user.email)
         this.token = response.body.token
       })
     })

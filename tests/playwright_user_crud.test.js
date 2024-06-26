@@ -14,7 +14,7 @@ test.describe.serial(`Supertest users API`, async () => {
     expect(response.status()).toBe(201)
     expect(body.user).toHaveProperty('firstName', user.firstName)
     expect(body.user).toHaveProperty('lastName', user.lastName)
-    expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+    expect(body.user).toHaveProperty('email', user.email)
     token = body.token
   })
   test('login registered user', async ({ api }) => {
@@ -26,7 +26,7 @@ test.describe.serial(`Supertest users API`, async () => {
     expect(response.status()).toBe(200)
     expect(body.user).toHaveProperty('firstName', user.firstName)
     expect(body.user).toHaveProperty('lastName', user.lastName)
-    expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+    expect(body.user).toHaveProperty('email', user.email)
     token = body.token
   })
   test(`get user profile`, async ({ api }) => {
@@ -35,7 +35,7 @@ test.describe.serial(`Supertest users API`, async () => {
     expect(response.status()).toBe(200)
     expect(body).toHaveProperty('firstName', user.firstName)
     expect(body).toHaveProperty('lastName', user.lastName)
-    expect(body).toHaveProperty('email', user.email.toLowerCase())
+    expect(body).toHaveProperty('email', user.email)
   })
   test(`update user profile`, async ({ api }) => {
     const response = await api.patchReq(
@@ -52,7 +52,7 @@ test.describe.serial(`Supertest users API`, async () => {
     expect(response.status()).toBe(200)
     expect(body).toHaveProperty('firstName', 'Updated')
     expect(body).toHaveProperty('lastName', 'Username')
-    expect(body).toHaveProperty('email', user.email.toLowerCase())
+    expect(body).toHaveProperty('email', user.email)
   })
   test(`logout user`, async ({ api }) => {
     const response = await api.postReq('/users/logout', {}, token)
@@ -71,7 +71,7 @@ test.describe.serial(`Supertest users API`, async () => {
     expect(response.status()).toBe(200)
     expect(body.user).toHaveProperty('firstName', 'Updated')
     expect(body.user).toHaveProperty('lastName', 'Username')
-    expect(body.user).toHaveProperty('email', user.email.toLowerCase())
+    expect(body.user).toHaveProperty('email', user.email)
     token = body.token
   })
   test(`delete registered user`, async ({ api }) => {

@@ -18,7 +18,7 @@ for (let i = 0; i < 10; i++) {
       expect(response.status).to.equal(201)
       expect(response.body.user).to.have.property('firstName', user.firstName)
       expect(response.body.user).to.have.property('lastName', user.lastName)
-      expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+      expect(response.body.user).to.have.property('email', user.email)
     })
     it(`login registered user ${user.firstName}`, async () => {
       const response = await request(process.env.BASE_URL).post('/users/login').send({
@@ -28,7 +28,7 @@ for (let i = 0; i < 10; i++) {
       expect(response.status).to.equal(200)
       expect(response.body.user).to.have.property('firstName', user.firstName)
       expect(response.body.user).to.have.property('lastName', user.lastName)
-      expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+      expect(response.body.user).to.have.property('email', user.email)
       token = response.body.token
     })
     it(`get user ${user.firstName} profile`, async () => {
@@ -36,7 +36,7 @@ for (let i = 0; i < 10; i++) {
       expect(response.status).to.equal(200)
       expect(response.body).to.have.property('firstName', user.firstName)
       expect(response.body).to.have.property('lastName', user.lastName)
-      expect(response.body).to.have.property('email', user.email.toLowerCase())
+      expect(response.body).to.have.property('email', user.email)
     })
     it(`update user ${user.firstName} profile`, async () => {
       const response = await request(process.env.BASE_URL)
@@ -51,7 +51,7 @@ for (let i = 0; i < 10; i++) {
       expect(response.status).to.equal(200)
       expect(response.body).to.have.property('firstName', 'Updated')
       expect(response.body).to.have.property('lastName', 'Username')
-      expect(response.body).to.have.property('email', user.email.toLowerCase())
+      expect(response.body).to.have.property('email', user.email)
     })
     it(`logout user ${user.firstName}`, async () => {
       const response = await request(process.env.BASE_URL).post('/users/logout').set('Authorization', `Bearer ${token}`)
@@ -69,7 +69,7 @@ for (let i = 0; i < 10; i++) {
       expect(response.status).to.equal(200)
       expect(response.body.user).to.have.property('firstName', 'Updated')
       expect(response.body.user).to.have.property('lastName', 'Username')
-      expect(response.body.user).to.have.property('email', user.email.toLowerCase())
+      expect(response.body.user).to.have.property('email', user.email)
       token = response.body.token
     })
     it(`delete user ${user.firstName}`, async () => {
