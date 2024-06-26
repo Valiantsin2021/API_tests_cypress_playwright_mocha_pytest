@@ -1,10 +1,23 @@
 // @ts-nocheck
+import fs from 'fs'
 import { expect, test } from '../fixtures/fixture.api.js'
-import { UserBuilder } from '../utils/dataFactory.js'
+const users = JSON.parse(fs.readFileSync('./1.json'))
 let token = ''
-for (let i = 0; i < 10; i++) {
-  test.describe.serial(`Supertest users API ${i}`, async () => {
-    const user = new UserBuilder().setDefaults().build()
+// const users = [
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build(),
+//   new UserBuilder().setDefaults().build()
+// ]
+for (let user of users) {
+  test.describe.serial(`Supertest users API user ${user.firstName}`, async () => {
     test(`register new user ${user.firstName}`, async ({ api }) => {
       const response = await api.postReq('/users', {
         firstName: user.firstName,
@@ -39,7 +52,7 @@ for (let i = 0; i < 10; i++) {
       expect(body).toHaveProperty('lastName', user.lastName)
       expect(body).toHaveProperty('email', user.email.toLowerCase())
     })
-    test(`update user ${user.firstName}profile`, async ({ api }) => {
+    test(`update user ${user.firstName} profile`, async ({ api }) => {
       const response = await api.patchReq(
         '/users/me',
         {

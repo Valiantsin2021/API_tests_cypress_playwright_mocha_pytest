@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "mocha": "mocha --spec ./tests/mocha/*.spec.js",
+    "mocha": "mocha --spec --parallel ./tests/mocha/*.spec.js",
     "cypress": "npx cypress run",
     "playwright": "npx playwright test --project=api-tests"
   },
