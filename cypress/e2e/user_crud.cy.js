@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-plugin-api'
-import { user, UserBuilder } from '../../utils/dataFactory.js'
-const modifiedUser = new UserBuilder().setDefaults().build()
+import { user } from '../../utils/dataFactory.js'
 
 describe('API users crud', () => {
   before(() => {

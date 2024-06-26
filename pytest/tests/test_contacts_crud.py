@@ -7,6 +7,10 @@ from faker import Faker
 from faker.providers import person
 import pytest
 
+# from mimesis import Person, Address
+# person = Person()
+# address = Address()
+
 fake = Faker()
 fake.add_provider(person)
 load_dotenv()
