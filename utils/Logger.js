@@ -9,7 +9,7 @@ import fs from 'fs'
 
 export class Logger {
   /**
-   * Logs a message to a specified log file or the default 'app.log'.
+   * Logs a message to a specified log file or the default 'fails.log'.
    * The log message includes a timestamp.
    *
    * @param {string} message - The message to be logged.
@@ -31,6 +31,9 @@ export class Logger {
     Logger.applyColorization()
     const date = new Date().toISOString()
     try {
+      if (!fs.existsSync(logfile)) {
+        fs.writeFileSync(logfile, '', { flag: 'wx' }) // 'wx' flag to avoid overwriting existing file
+      }
       fs.appendFileSync(logfile, `${date} - ${message}\n`)
       console.log(Logger.green(`Log written to ${logfile}`))
     } catch (err) {
@@ -133,15 +136,27 @@ export class Logger {
    */
 
   static async logBrowserConsole(page) {
-    Logger.applyColorization()
-    // page.on('request', request => console.log(this.color.outgoingRequest('>>', request.method(), request.url())))
-    // page.on('response', response => console.log(this.color.incomingRequest('<<', response.status(), response.url())))
-    page.on('pageerror', async exception => {
-      console.error(`Uncaught exception: "${exception}"`)
-    })
-    page.on('console', async messsage => {
-      console.error(`BROWSER: ${messsage.type()} with message ${messsage.text()}`)
-    })
+    try {
+      Logger.applyColorization()
+      // page.on('request', request => console.log(this.color.outgoingRequest('>>', request.method(), request.url())))
+      // page.on('response', response => console.log(this.color.incomingRequest('<<', response.status(), response.url())))
+      page.on('pageerror', async exception => {
+        try {
+          console.error(`Uncaught exception: "${exception}"`)
+        } catch (error) {
+          console.error(`Error in pageerror handler: ${error}`)
+        }
+      })
+      page.on('console', async message => {
+        try {
+          console.error(`BROWSER: ${message.type()} with message ${message.text()}`)
+        } catch (error) {
+          console.error(`Error in console message handler: ${error}`)
+        }
+      })
+    } catch (error) {
+      console.error(`Error setting up browser console loggers: ${error}`)
+    }
   }
 }
 Logger.applyColorization()

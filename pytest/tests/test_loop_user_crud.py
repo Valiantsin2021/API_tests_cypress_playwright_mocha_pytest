@@ -11,12 +11,8 @@ token = ""
 users = json.loads(open("./fixtures/users.json", "r").read())
 session = requests.Session()
 session.verify = False
-data = []
-for i in range(len(users)):
-    data.append((users[i]))
 
-
-@pytest.mark.parametrize("user", data, scope="class")
+@pytest.mark.parametrize("user", users, scope="class")
 class Test_UserCrud:
     def test_register_user(self, user):
         global token
