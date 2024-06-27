@@ -8,9 +8,9 @@ export class API {
    */
   bool = true
   constructor(request, page = null) {
-    /**@type {import('@playwright/test').APIRequestContext} page page passed in a constructor of the POM */
+    /**@type {import('@playwright/test').APIRequestContext} request passed in a constructor */
     this.request = request
-    /**@type {import('@playwright/test').Page} page page passed in a constructor of the POM */
+    /**@type {import('@playwright/test').Page} page page passed in a constructor */
     this.page = page
   }
   async enableLog(bool) {

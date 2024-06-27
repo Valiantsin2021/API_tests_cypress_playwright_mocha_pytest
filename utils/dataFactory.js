@@ -2,11 +2,11 @@ import { faker } from '@faker-js/faker'
 function getRandomItem(array) {
   return array[Math.floor(Math.random() * array.length)]
 }
+const statuses = ['active', 'inactive']
 const countries = ['India', 'United States', 'Canada', 'Australia', 'New Zealand', 'Israel', 'Singapore']
 const days = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 ]
-const day = getRandomItem(days)
 const months = [
   'January',
   'February',
@@ -21,7 +21,6 @@ const months = [
   'November',
   'December'
 ]
-const month = getRandomItem(months)
 export class UserBuilder {
   constructor() {
     /**
@@ -50,9 +49,10 @@ export class UserBuilder {
     this.user.postalCode = faker.location.zipCode()
     this.user.country = getRandomItem(countries) || faker.location.country()
     this.user.dateOfBirth = faker.date.birthdate().toISOString().slice(0, 10)
-    ;(this.user.day = day), (this.user.month = month)
+    this.user.day = getRandomItem(days)
+    this.user.month = getRandomItem(months)
     this.user.gender = faker.person.sex()
-    this.user.status = Math.floor(Math.random() * 2) + 1 === 1 ? 'active' : 'inactive'
+    this.user.status = getRandomItem(statuses)
     this.user.company = faker.company.name()
     return this
   }

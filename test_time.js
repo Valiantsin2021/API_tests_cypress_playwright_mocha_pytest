@@ -10,7 +10,7 @@ exec('npm run mocha', (error, stdout, stderr) => {
   }
 })
 console.time('cypress')
-exec('npm run cypress', (error, stdout, stderr) => {
+exec('npm run cy:parallel', (error, stdout, stderr) => {
   console.timeEnd('cypress')
   console.log(stdout)
   console.error(stderr)

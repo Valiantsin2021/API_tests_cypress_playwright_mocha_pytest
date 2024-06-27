@@ -1,4 +1,4 @@
-This repository purpose is to show how to use Cypress with Playwright and Mocha test frameworks for API testing and to measure the performance of these frameworks.
+This repository purpose is to show how to use Cypress with Playwright, Mocha/Supertest, and Pytest test frameworks for API testing and to measure the performance of these frameworks.
 
 ## Prerequisites
 
@@ -58,14 +58,14 @@ python pytest_time.py
 
 ## Conclusion
 
-Time measured per framework for one user and one contact scenario:
+Time measured per framework for one user and one contact scenario (25 tests run sequentially):
 
 1. Cypress: > 37s
 2. Playwright: > 16s
 3. Mocha: > 14s
 4. Pytest: > 5s
 
-Time measured per framework for multiple users (11) and multiple contact (11) scenarios:
+Time measured per framework for multiple users (11) and multiple contact (11) scenarios 300 tests:
 
 1. Cypress: > 4m29s
 2. Playwright: > 39s
