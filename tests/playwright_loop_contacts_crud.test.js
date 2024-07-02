@@ -6,8 +6,8 @@ const contact = JSON.parse(fs.readFileSync('./fixtures/contact1.json'))
 const contact2 = JSON.parse(fs.readFileSync('./fixtures/contact2.json'))
 let token = ''
 let contactId = ''
-for(let i = 0; i < users.length; i++) {
-  test.describe.serial(`Contacts APIfor user ${i + 1}`, async () => {
+for (let i = 0; i < users.length; i++) {
+  test.describe.serial(`Playwright: thinking-tester-contact-list contacts API for user ${i + 1}`, async () => {
     test(`register new user ${users[i].firstName}`, async ({ api }) => {
       const response = await api.postReq('/users', {
         firstName: users[i].firstName,

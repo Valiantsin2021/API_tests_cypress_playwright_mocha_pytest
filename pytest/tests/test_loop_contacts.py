@@ -22,7 +22,7 @@ session.verify = False
 
 
 @pytest.mark.parametrize("user, contact1, contact2", data, scope="class")
-class Test_ContactsCrud:
+class Test__Loop_ContactsCrud:
 
     def test_register_user(self, user, contact1, contact2):
         global token

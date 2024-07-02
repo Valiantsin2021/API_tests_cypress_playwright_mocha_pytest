@@ -5,7 +5,7 @@ const contact = new UserBuilder().setDefaults().build()
 const contact2 = new UserBuilder().setDefaults().build()
 let token = ''
 let contactId = ''
-test.describe.serial(`Contacts API`, async () => {
+test.describe.serial(`Playwright: thinking-tester-contact-list contacts API`, async () => {
   test('register new user', async ({ api }) => {
     const response = await api.postReq('/users', {
       firstName: user.firstName,

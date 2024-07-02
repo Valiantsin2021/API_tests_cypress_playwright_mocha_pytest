@@ -1,4 +1,3 @@
-import { request } from '@playwright/test'
 import { Logger } from './Logger.js'
 
 export class API {
@@ -7,11 +6,9 @@ export class API {
    * @param {import('@playwright/test').APIRequestContext} request request passed in a constructor of the API class
    */
   bool = true
-  constructor(request, page = null) {
+  constructor(request) {
     /**@type {import('@playwright/test').APIRequestContext} request passed in a constructor */
     this.request = request
-    /**@type {import('@playwright/test').Page} page page passed in a constructor */
-    this.page = page
   }
   async enableLog(bool) {
     this.bool = bool
@@ -49,56 +46,5 @@ export class API {
 
   async deleteReq(endpoint, token = null, params = null) {
     return await this.#makeRequest(endpoint, 'delete', null, token, params)
-  }
-  /**
-   * Create a request with token from localStorage
-   */
-  async createRequestWithToken(baseURL) {
-    const token = await this.page.evaluate('localStorage["token"]')
-    const apiRequest = await request.newContext({
-      baseURL: baseURL,
-      extraHTTPHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    return apiRequest
-  }
-  /**
-   * Wait for response from url contains the api url
-   * @param apiUrl api url to wait until get the response
-   * @param statusCode Status code returned by the api
-   * @returns responsePromise
-   */
-  async waitForResponse(apiUrl, statusCode = 200, method) {
-    const responsePromise = this.page.waitForResponse(
-      response =>
-        response.url().includes(apiUrl) && response.request().method() === method && response.status() === statusCode
-    )
-    return responsePromise
-  }
-  /**
-   * An asynchronous function to mock an API response for a given URL with the provided JSON data.
-   *
-   * @param {string} url - the URL for which to mock the API response
-   * @param {any} jsonData - the JSON data to be used for mocking the API response
-   */
-  async mockApi(url, jsonData) {
-    await this.page.route(url, async route => {
-      await route.fulfill({ body: JSON.stringify(jsonData) })
-    })
-  }
-  /**
-   * Asynchronously adds a block to the given URI.
-   *
-   * @param {string} uri - The URI to block.
-   * @return {Promise<void>} A promise that resolves when the block is added.
-   */
-  async blockAdd(uri) {
-    await this.page.route('**/*', route => {
-      if (route.request().url().startsWith(uri)) {
-        return route.abort()
-      }
-      return route.continue()
-    })
   }
 }

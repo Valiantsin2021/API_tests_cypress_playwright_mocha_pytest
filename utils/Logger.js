@@ -127,36 +127,5 @@ export class Logger {
     this.inspect(toLog)
     console.info('<<<<<<<<<<<<<<<<< END OF RESPONSE <<<<<<<<<<<<<<<<<')
   }
-
-  /**
-   * Logs requests and responses occurred on the UI testing page.
-   * @property {Function} logBrowserConsole Logs requests and responses occurred on the UI testing page.
-   * @returns {Promise<void>}
-   * @param {object} page - Page instance to listen for requests, responses, and console messages.
-   */
-
-  static async logBrowserConsole(page) {
-    try {
-      Logger.applyColorization()
-      // page.on('request', request => console.log(this.color.outgoingRequest('>>', request.method(), request.url())))
-      // page.on('response', response => console.log(this.color.incomingRequest('<<', response.status(), response.url())))
-      page.on('pageerror', async exception => {
-        try {
-          console.error(`Uncaught exception: "${exception}"`)
-        } catch (error) {
-          console.error(`Error in pageerror handler: ${error}`)
-        }
-      })
-      page.on('console', async message => {
-        try {
-          console.error(`BROWSER: ${message.type()} with message ${message.text()}`)
-        } catch (error) {
-          console.error(`Error in console message handler: ${error}`)
-        }
-      })
-    } catch (error) {
-      console.error(`Error setting up browser console loggers: ${error}`)
-    }
-  }
 }
 Logger.applyColorization()

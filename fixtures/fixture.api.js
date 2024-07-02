@@ -16,7 +16,7 @@ import { Logger } from '../utils/Logger.js'
 const extension = {
   api: async ({ request, page }, use, testInfo) => {
     const api = new API(request, page)
-    await api.enableLog(false)
+    await api.enableLog(process.env.LOG)
     await use(api)
     if (testInfo.status !== testInfo.expectedStatus) {
       Logger.logToFile(`FAILED: ${testInfo.title} -- ${testInfo.status} \n${testInfo.error.message}`)

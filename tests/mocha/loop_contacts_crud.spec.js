@@ -170,7 +170,6 @@ for (let i = 0; i < 10; i++) {
       expect(response.body).to.have.property('lastName', 'Name')
       expect(response.body).to.have.property('email', contact2.email)
     })
-
     it(`get contacts for ${user.firstName} after patch`, async () => {
       const response = await request(process.env.BASE_URL).get('/contacts').set('Authorization', `Bearer ${token}`)
       expect(response.status).to.equal(200)

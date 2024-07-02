@@ -2,7 +2,7 @@
 import { expect, test } from '../fixtures/fixture.api.js'
 import { user } from '../utils/dataFactory.js'
 let token = ''
-test.describe.serial(`Supertest users API`, async () => {
+test.describe.serial(`Playwright: thinking-tester-contact-list users API`, async () => {
   test('register new user', async ({ api }) => {
     const response = await api.postReq('/users', {
       firstName: user.firstName,

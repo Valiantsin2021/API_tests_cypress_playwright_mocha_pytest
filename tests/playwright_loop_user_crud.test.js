@@ -4,7 +4,7 @@ import { expect, test } from '../fixtures/fixture.api.js'
 const users = JSON.parse(fs.readFileSync('./fixtures/users.json'))
 let token = ''
 for (let user of users) {
-  test.describe.serial(`Supertest users API user ${user.firstName}`, async () => {
+  test.describe.serial(`Playwright: thinking-tester-contact-list users API user ${user.firstName}`, async () => {
     test(`register new user ${user.firstName}`, async ({ api }) => {
       const response = await api.postReq('/users', {
         firstName: user.firstName,

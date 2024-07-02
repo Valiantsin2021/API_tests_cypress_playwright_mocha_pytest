@@ -13,7 +13,7 @@ session = requests.Session()
 session.verify = False
 
 @pytest.mark.parametrize("user", users, scope="class")
-class Test_UserCrud:
+class Test_Loop_UserCrud:
     def test_register_user(self, user):
         global token
         headers = {"Content-Type": "application/json"}

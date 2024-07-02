@@ -31,7 +31,6 @@ class Test_UserCrud:
         assert body["user"]["lastName"] == user["lastName"]
         assert body["user"]["email"] == user["email"]
         token = body["token"]
-
     def test_login_user(self):
         global token
         headers = {'Content-Type': 'application/json'}
@@ -58,7 +57,6 @@ class Test_UserCrud:
             and body["lastName"] == user["lastName"]
             and body["email"] == user["email"]
         )
-
     def test_update_user_profile(self):
         global token
         response = session.patch(
@@ -105,7 +103,6 @@ class Test_UserCrud:
         assert body["user"]["lastName"] == 'Username'
         assert body["user"]["email"] == user["email"]
         token = body["token"]
-
     def test_delete_user(self):
         global token
         response = session.delete(
@@ -113,7 +110,6 @@ class Test_UserCrud:
             headers={"Authorization": "Bearer " + token},
         )
         assert response.status_code == 200
-
     def test_get_user_profile_after_delete(self):
         global token
         response = session.get(
